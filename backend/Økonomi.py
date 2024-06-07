@@ -25,6 +25,9 @@ class Økonomi:
         
         return list 
     
+    def lag_regning(Transaksjons_linje):
+        return list
+    
     def Fordel_regninger_måner(kontoer):
         return List
     
@@ -69,9 +72,3 @@ class Økonomi:
                  # Split linjen på semikolon
                 values = second_line.split(';')
                 return values
-
-# Les CSV-filen inn i en DataFrame
-df = pd.read_csv('transaksjoner.csv')
-
-# Vis de første radene i DataFrame
-print(df.head())

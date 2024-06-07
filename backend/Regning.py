@@ -1,22 +1,21 @@
 from datetime import date
 
 class Regning:
-    def __init__(self, Konto_Fra: int, Konto_Til: int, ut_av_konto: float, inn_på_konto: float, valuta: str,
-                 bokført: date, rentedato: date, type: str, beskrivelse: str, Melding: str, fast_regning: bool):
-        self.Konto_Fra = Konto_Fra
-        self.Konto_Til = Konto_Til
-        self.ut_av_konto = ut_av_konto
-        self.inn_på_konto = inn_på_konto
-        self.valuta = valuta
-        self.bokført = bokført
-        self.rentedato = rentedato
-        self.type = type
+    def __init__(self, bokført: str, rentedato: str, transaksjonstype: str, beskrivelse: str, melding: str,
+                 ut_av_konto: float, inn_på_konto: float, valutasort: str, fra_konto: int, til_konto: int):
+        self.bokført = date.strptime(bokført, '%Y-%m-%d') if bokført else None
+        self.rentedato = date.strptime(rentedato, '%Y-%m-%d') if rentedato else None
+        self.transaksjonstype = transaksjonstype
         self.beskrivelse = beskrivelse
-        self.Melding = Melding
-        self.fast_regning = fast_regning
-    
+        self.melding = melding
+        self.ut_av_konto = float(ut_av_konto) if ut_av_konto else None
+        self.inn_på_konto = float(inn_på_konto) if inn_på_konto else None
+        self.valutasort = valutasort
+        self.fra_konto = int(fra_konto) if fra_konto else None
+        self.til_konto = int(til_konto) if til_konto else None
+
     def __repr__(self):
-        return (f"Transaksjon(Konto_Fra={self.Konto_Fra}, Konto_Til={self.Konto_Til}, ut_av_konto={self.ut_av_konto}, "
-                f"inn_på_konto={self.inn_på_konto}, valuta='{self.valuta}', bokført={self.bokført}, "
-                f"rentedato={self.rentedato}, type='{self.type}', beskrivelse='{self.beskrivelse}', "
-                f"Melding='{self.Melding}', fast_regning={self.fast_regning})")
+        return (f"Regning(bokført={self.bokført}, rentedato={self.rentedato}, transaksjonstype='{self.transaksjonstype}', "
+                f"beskrivelse='{self.beskrivelse}', melding='{self.melding}', ut_av_konto={self.ut_av_konto}, "
+                f"inn_på_konto={self.inn_på_konto}, valutasort='{self.valutasort}', fra_konto={self.fra_konto}, "
+                f"til_konto={self.til_konto})")
