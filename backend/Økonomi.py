@@ -19,19 +19,30 @@ class Økonomi:
         self.spart = spart
     
     
-    def lag_konto(fil):
-        
+    def lag_konto(self,fil):
+        kontonummer = self.finn_konto(self.Les_linje(fil,1))
+        konto = Konto(kontonummer)
         
         
         return list 
     
-    def lag_regning(Transaksjons_linje):
-        return list
+    def lag_regning(self,Transaksjons_linje):
+        """ Tar inn en linje fra transaksjonsfilen og lager en Regnings objekt basert på den
+
+        Args:
+            Transaksjons_linje (List): liste med verdiene fra en linje 
+
+        Returns:
+            Regning: regning laget av en linjen i transaksjonsfilen
+        """
+        tl = Transaksjons_linje
+        regning = Regning(tl[0],tl[1],tl[2],tl[3],tl[4],tl[5],tl[6],tl[7],tl[8],tl[9])            
+        return regning
     
-    def Fordel_regninger_måner(kontoer):
+    def Fordel_regninger_måner(self,kontoer):
         return List
     
-    def Resault_måne(regninger):
+    def Resault_måne(self,regninger):
         return List
     
     def finn_konto(linje_2):
@@ -49,8 +60,7 @@ class Økonomi:
         if(ut_av_konto != ""):
             return fra_konto
         return til_konto
-        
-    
+         
     def Les_linje(fil, linje):
         """ Leser er linje i transaksjons listen og returnerer den som en lsite. 
 
