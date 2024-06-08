@@ -20,10 +20,14 @@ class Økonomi:
     
     
     def lag_konto(self,fil):
-        kontonummer = self.finn_konto(self.Les_linje(fil,1))
+        linje =1
+        t_linje = self.Les_linje(fil,linje)
+        kontonummer = self.finn_konto(t_linje)
         konto = Konto(kontonummer)
-        
-        
+        while(t_linje != None):
+            konto.regninger.append(t_linje)
+            linje +=1
+            t_linje = self.Les_linje(fil,linje)
         return list 
     
     def lag_regning(self,Transaksjons_linje):
@@ -78,7 +82,9 @@ class Økonomi:
             # Sjekk at filen har minst to linjer (overskrift + én datalinje)
             if len(lines) >= 2:
                 second_line = lines[linje].strip()  # .strip() fjerner eventuelle ledende og etterfølgende hvite tegn
-
+                if second_line:
                  # Split linjen på semikolon
-                values = second_line.split(';')
-                return values
+                    values = second_line.split(';')
+                    return values
+                return None
+
