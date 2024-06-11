@@ -3,7 +3,7 @@ from Regning import Regning
 
 class Konto:
     
-    def __init__(self, konto_nr: int, regninger: List[Regning], faste_regninger:List[Regning],inntekt:float ):
+    def __init__(self, konto_nr: int, regninger= None, faste_regninger = None,inntekt = None ):
         self.konto_nr = konto_nr
         self.regninger = regninger if regninger is not None else []
         self.faste_regninger = faste_regninger if faste_regninger is not None else []
