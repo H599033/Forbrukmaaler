@@ -1,7 +1,8 @@
 from typing import List
-
+from datetime import datetime
 from Konto import Konto
 from Regning import Regning
+from Måned import Måned
 
 
 class Service:
@@ -11,25 +12,89 @@ class Service:
             som regning objekter i konto sin regniner liste
         Args:
             fil (cvs): konto filen
-
         Returns:
             Konto: kontoen som er laget
         """
-        linje =1
+      
         with open(cvs_fil, 'r', newline='') as csvfile:
             # Les alle linjene i filen
             linjer = csvfile.readlines()
             
-        t_linje = self.Les_linje(linjer,linje)
+        t_linje = self.Les_linje(linjer,1)
         kontonummer = self.finn_konto(t_linje)
         konto = Konto(kontonummer)
         
-        while(linje<len(linjer)-1):   
-            regning = self.lag_regning(t_linje) 
-            konto.regninger.append(regning)
+        self.legg_til_regninger(konto,t_linje,linjer)
+       
+        return konto
+    
+    def legg_til_regninger(self, konto, t_linje,linjer):
+        linje =1
+        list_år = []
+        år = self.finn_år(t_linje)
+        mnd = Måned(self.finn_måned(t_linje))
+        
+        while(linje<len(linjer)-1):
+            neste_år = self.finn_år(t_linje)
+            
+            if år != neste_år:
+                konto.år.append(list_år)
+                år =neste_år
+                list_år = []
+            neste_mnd = self.finn_måned(t_linje)
+            
+            if mnd.måned != neste_mnd:
+                list_år.append(mnd)
+                mnd = Måned(neste_mnd)
+            
+            regning = self.lag_regning(t_linje)
+            
+            mnd.regninger.append(regning)
             linje +=1
             t_linje = self.Les_linje(linjer,linje)
-        return konto
+        
+    def finn_år(self, t_linje):
+        # Sjekk at linjen ikke er tom og har nok elementer
+        if t_linje and len(t_linje) > 0:
+            try:
+                # Hent datoen fra første kolonne
+                dato_str = t_linje[0]
+                
+                # Konverter datoen til et datetime-objekt
+                dato = datetime.strptime(dato_str, '%d.%m.%Y')
+                
+                # Ekstraher året fra datetime-objektet
+                år = dato.year
+                
+                return år
+            except ValueError as e:
+                print(f"Feil ved konvertering av dato: {e}")
+                return None
+        else:
+            print("Linjen er tom eller har ikke nok elementer.")
+            return None
+        
+    def finn_måned(self, t_linje):
+        # Sjekk at linjen ikke er tom og har nok elementer
+        if t_linje and len(t_linje) > 0:
+            try:
+                # Hent datoen fra første kolonne
+                dato_str = t_linje[0]
+                
+                # Konverter datoen til et datetime-objekt
+                dato = datetime.strptime(dato_str, '%d.%m.%Y')
+                
+                # Ekstraher året fra datetime-objektet
+                måned = dato.month
+                
+                return måned
+            except ValueError as e:
+                print(f"Feil ved konvertering av dato: {e}")
+                return None
+        else:
+            print("Linjen er tom eller har ikke nok elementer.")
+            return None
+        
     
     def lag_regning(self,Transaksjons_linje):
         """ Tar inn en linje fra transaksjonsfilen og lager en Regnings objekt basert på den
