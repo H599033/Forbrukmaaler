@@ -1,6 +1,6 @@
 from datetime import datetime
 
-class Måned:
+class Maaned:
     def __init__(self, måned: datetime.month, regninger= None, faste_regninger = None,inntekt = None ):
         self.måned = måned
         self.regninger = regninger if regninger is not None else []

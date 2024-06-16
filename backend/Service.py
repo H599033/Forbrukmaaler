@@ -2,8 +2,8 @@ from typing import List
 from datetime import datetime
 from Konto import Konto
 from Regning import Regning
-from Måned import Måned
-
+from Maaned import Maaned
+from Aar import Aar
 
 class Service:
     
@@ -30,22 +30,19 @@ class Service:
     
     def legg_til_regninger(self, konto, t_linje,linjer):
         linje =1
-        list_år = []
-        år = self.finn_år(t_linje)
-        mnd = Måned(self.finn_måned(t_linje))
+        år = Aar(self.finn_år(t_linje))
+        mnd = Maaned(self.finn_måned(t_linje))
         
         while(linje<len(linjer)-1):
             neste_år = self.finn_år(t_linje)
-            
-            if år != neste_år:
-                konto.år.append(list_år)
-                år =neste_år
-                list_år = []
+            if år.Aar != neste_år:
+                konto.alle_aar.append(år)
+                år = Aar(neste_år)
+                
             neste_mnd = self.finn_måned(t_linje)
-            
             if mnd.måned != neste_mnd:
-                list_år.append(mnd)
-                mnd = Måned(neste_mnd)
+                år.maaner.append(mnd)
+                mnd = Maaned(neste_mnd)
             
             regning = self.lag_regning(t_linje)
             
@@ -94,7 +91,6 @@ class Service:
         else:
             print("Linjen er tom eller har ikke nok elementer.")
             return None
-        
     
     def lag_regning(self,Transaksjons_linje):
         """ Tar inn en linje fra transaksjonsfilen og lager en Regnings objekt basert på den

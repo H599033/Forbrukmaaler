@@ -7,6 +7,8 @@ I denne grafen representerer x-aksen dagene i måneden, mens y-aksen viser innte
 
 ![Alt text](images/html_prototype.png)
 
+Dette prosjektet er ikke laget for å lagre sensitiv informasjon, så et databasesystem blir dermed ikke implementert.
+
 første prototype for classediagramet
 
 ![Alt text](images/prototyp_classediagram.png)
