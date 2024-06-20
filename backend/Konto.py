@@ -11,6 +11,12 @@ class Konto:
         self.inntekt = inntekt if inntekt is not None else 0
     
     
+    def Finn_sist_måned(self):
+        
+        if self.alle_aar[0].maaner[1] is None:
+            return self.alle_aar[1].maaner[11]
+        return self.alle_aar[0].maaner[1]
+    
     def Finn_faste_regninger(regninger):
         return List
     

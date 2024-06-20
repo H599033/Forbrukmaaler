@@ -5,7 +5,7 @@ from Regning import Regning
 from Maaned import Maaned
 from Aar import Aar
 
-class Service:
+class Service_Konto:
     
     def lag_konto(self,cvs_fil):
         """ tar inn en Cvs konto fil og lager ett konto objekt. og lagerer alle regninger fra dennn filen
@@ -29,6 +29,13 @@ class Service:
         return konto
     
     def legg_til_regninger(self, konto, t_linje,linjer):
+        """ legger til regninger i riktig måned og år for en konto.
+
+        Args:
+            konto (Konto objekt): Konto objektet
+            t_linje (list): verdiene til en linje i cvs tranaksjons filen
+            linjer (int): linjen som blir lest av hos cvs filen.
+        """
         linje =1
         år = Aar(self.finn_år(t_linje))
         mnd = Maaned(self.finn_måned(t_linje))
@@ -36,21 +43,28 @@ class Service:
         while(linje<len(linjer)-1):
             neste_år = self.finn_år(t_linje)
             if år.Aar != neste_år:
+                print(" inne i år")
                 konto.alle_aar.append(år)
                 år = Aar(neste_år)
-                
-            neste_mnd = self.finn_måned(t_linje)
-            if mnd.måned != neste_mnd:
-                år.maaner.append(mnd)
-                mnd = Maaned(neste_mnd)
             
             regning = self.lag_regning(t_linje)
-            
             mnd.regninger.append(regning)
+            if regning.type =="Lønn":
+                print("inne i mnd")
+                år.maaner.append(mnd)
+                print(len(år.maaner))
+                mnd = Maaned(self.finn_måned(t_linje))
+            
             linje +=1
             t_linje = self.Les_linje(linjer,linje)
         
     def finn_år(self, t_linje):
+        """finner hvilket år som linjen er basert på
+        Args:
+            t:linje(list) linjen som skal sjekkes
+        Returns:
+            datetime: året som blir funnet
+        """
         # Sjekk at linjen ikke er tom og har nok elementer
         if t_linje and len(t_linje) > 0:
             try:
@@ -72,6 +86,12 @@ class Service:
             return None
         
     def finn_måned(self, t_linje):
+        """finner hvilken måned som linjen er basert på
+        Args:
+            t:linje(list) linjen som skal sjekkes
+        Returns:
+            datetime: måned som blir funnet
+        """
         # Sjekk at linjen ikke er tom og har nok elementer
         if t_linje and len(t_linje) > 0:
             try:
@@ -92,6 +112,11 @@ class Service:
             print("Linjen er tom eller har ikke nok elementer.")
             return None
     
+    def første_inntekt_mnd(self, t_linje):
+        
+        
+        return 
+    
     def lag_regning(self,Transaksjons_linje):
         """ Tar inn en linje fra transaksjonsfilen og lager en Regnings objekt basert på den
 
@@ -104,12 +129,6 @@ class Service:
         tl = Transaksjons_linje
         regning = Regning(tl[0],tl[1],tl[2],tl[3],tl[4],tl[5],tl[6],tl[7],tl[8],tl[9])            
         return regning
-    
-    def Fordel_regninger_måner(self,kontoer):
-        return List
-    
-    def Resault_måne(self,regninger):
-        return List
     
     def finn_konto(self,linje_2):
         """ Tar inn linje 2 i Transaksjons filen og finner ut hvilken konto som filen er lastet ned fra. 
